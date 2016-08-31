@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 15:27:23 by aviau             #+#    #+#             */
-/*   Updated: 2016/08/31 16:54:10 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/01 01:03:24 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,21 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <pwd.h>
-# include <grpi.h>
+# include <grp.h>
 # include <uuid/uuid.h>
 # include <time.h>
 
 typedef struct	s_files
 {
-	char		*name;
-	char		*mode;
-	int			nl;
-	char		*usr;
-	char		*grp;
-	int			size;
-	int			time;
-	t_files		*last;
-	t_files		*next;
+	char				*name;
+	char				*mode;
+	int					nl;
+	char				*usr;
+	char				*grp;
+	int					size;
+	int					time;
+	struct s_files		*last;
+	struct s_files		*next;
 }				t_files;
 
 typedef struct	s_param
@@ -44,8 +44,11 @@ typedef struct	s_param
 	short	date;	// 0 modif - 1 access(u) - 2 creat(U)
 	short	sign;	// 1 sign(F)
 	short	color;	// 1 colorize(G)
+	short	hread;	// 1 human readable(h)
+	short	recu;	// 1 list recursivly(R)
 }				t_param;
 
-void	recu(t_files *f, t_param *param, char *path)
+void	recu(t_files *f, t_param param, char *path);
+void	start(char *dir, t_param param)
 
 #endif
