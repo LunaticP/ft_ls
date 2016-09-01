@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/30 16:54:04 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/01 01:08:52 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/01 03:45:42 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*put_path(char *path, char *dir)
 	return (path);
 }
 
-void	recu(t_param *param, char *path)
+void	recu(char *path, t_param param)
 {
 	char	**DIRS;
 	int		d_num;

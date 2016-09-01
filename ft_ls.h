@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 15:27:23 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/01 01:03:24 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/01 04:27:54 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <grp.h>
 # include <uuid/uuid.h>
 # include <time.h>
+# include <stdio.h>
 
 typedef struct	s_files
 {
@@ -48,7 +49,7 @@ typedef struct	s_param
 	short	recu;	// 1 list recursivly(R)
 }				t_param;
 
-void	recu(t_files *f, t_param param, char *path);
-void	start(char *dir, t_param param)
+void	recu(char *path, t_param param);
+t_files	*list_files(char *path, t_param param);
 
 #endif
