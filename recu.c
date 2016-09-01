@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/30 16:54:04 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/01 07:14:12 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/01 08:10:54 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void	recu(char *path, t_param param)
 			ft_putstr(":\n");
 			recu(path, param);
 		}
-		ft_putstr("\e[31m.");
+		ft_putstr("\e[31m.");	
 	}
 }
