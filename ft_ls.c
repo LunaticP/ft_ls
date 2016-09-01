@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 20:10:39 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/01 03:46:19 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/01 06:33:29 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,19 @@ int		main(int ac, char **av)
 		list_files("./", param);
 	else if (!(i = parse_param(av, &param)))
 		return (1);
-	else
+	else if (av[i])
 		while (av[i])
 		{
 			if (param.recu)
-				ft_putstr("recu(av[i], param);");
+				recu(av[i], param);
 			else
 				list_files(av[i], param);
 			i++;
 		}
+	else
+		if (param.recu)
+			recu("./", param);
+		else
+			list_files("./", param);
 	return (0);
 }

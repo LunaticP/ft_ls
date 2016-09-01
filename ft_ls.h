@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 15:27:23 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/01 04:27:54 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/01 07:11:21 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,7 @@ typedef struct	s_param
 
 void	recu(char *path, t_param param);
 t_files	*list_files(char *path, t_param param);
+t_files	*go_first(t_files *f);
+char	*set_path(char *path, char *name);
 
 #endif
