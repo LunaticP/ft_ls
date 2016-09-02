@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 15:27:23 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/01 07:11:21 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/02 01:27:39 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,10 @@ void	recu(char *path, t_param param);
 t_files	*list_files(char *path, t_param param);
 t_files	*go_first(t_files *f);
 char	*set_path(char *path, char *name);
+void	out_err(char *str);
+char	*get_mode(int mode);
+char	*get_usr(int uid);
+char	*get_grp(int gid);
+char	*get_time(struct stat stat, t_param param);
 
 #endif
