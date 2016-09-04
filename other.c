@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 16:58:05 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/02 01:19:33 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/03 04:06:09 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 void	out_err(char *str)
 {
-		perror(str);
-		exit(1);
+	perror(str);
+	exit(1);
 }
 
 char	*set_path(char *path, char *name)
 {
 	char	*out;
+
 	out = ft_strjoin(path, "/");
-	out = ft_strjoin(path, name);
+	out = ft_strjoin(out, name);
 	return (out);
 }
 

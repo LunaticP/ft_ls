@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 20:10:39 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/01 23:28:10 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/04 06:45:55 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		valid(char c)
 {
-	static char	*valid = "AFGRSUalhrtu1";
+	static char	*valid = "AFGRSUaflhrtu1";
 	int			i;
 
 	i = 0;
@@ -26,7 +26,7 @@ int		valid(char c)
 	}
 	ft_putstr("ft_ls: illegal option -- ");
 	ft_putchar(c);
-	ft_putstr("\nusage: ft_ls [AFGRSUalhrtu1] [file ...]\n");
+	ft_putstr("\nusage: ft_ls [AFGRSUaflhrtu1] [file ...]\n");
 	return (1);
 }
 
@@ -37,12 +37,13 @@ void	set_param(char p, t_param *param)
 	param->list = (p == '1') ? 1 : param->list;
 	param->list = (p == 'l') ? 2 : param->list;
 	param->sort = (p == 't') ? 1 : param->sort;
-	param->sort = (p == 'S') ? 1 : param->sort;
+	param->sort = (p == 'S') ? 2 : param->sort;
+	param->alph = (p == 'f') ? 1 : param->alph;
 	param->rev = (p == 'r') ? 1 : param->rev;
 	param->date = (p == 'u') ? 1 : param->date;
 	param->date = (p == 'U') ? 2 : param->date;
 	param->sign = (p == 'F') ? 1 : param->sign;
-	param->color = (p == 'g') ? 1 : param->color;
+	param->color = (p == 'G') ? 1 : param->color;
 	param->hread = (p == 'h') ? 1 : param->hread;
 	param->recu = (p == 'R') ? 1 : param->recu;
 }
@@ -88,9 +89,11 @@ int		main(int ac, char **av)
 			i++;
 		}
 	else
+	{
 		if (param.recu)
 			recu("./", param);
 		else
-			list_files("./", param);
+			free_list(list_files("./", param));
+	}
 	return (0);
 }
