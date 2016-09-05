@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 15:27:23 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/04 06:53:38 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/05 00:35:37 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ typedef struct	s_files
 	char				*grp;
 	int					size;
 	char				*time;
-	int					t;
-	struct s_files		*last;
+	struct timespec		t;
 	struct s_files		*next;
 }				t_files;
 
@@ -51,16 +50,17 @@ typedef struct	s_param
 	short	recu;	// 1 list recursivly(R)
 }				t_param;
 
-void	recu(char *path, t_param param);
 t_files	*list_files(char *path, t_param param);
-t_files	*go_first(t_files *f);
-t_files	*sort(t_files *f, t_param param);
-char	*set_path(char *path, char *name);
+void	recu(char *path, t_param param);
+void	sort(t_files **f, t_param param);
 void	out_err(char *str);
+void	free_list(t_files **f);
+char	*free_join(char *dst, char *src);
+char	*set_path(char *path, char *name);
 char	*get_mode(int mode);
 char	*get_usr(int uid);
 char	*get_grp(int gid);
-char	*get_time(int *t, struct stat stat, t_param param);
-void	free_list(t_files *f);
+char	*get_time(struct timespec *t, struct stat stat, t_param param);
+int		is_hide(char c, int all);
 
 #endif

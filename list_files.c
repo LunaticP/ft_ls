@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/01 01:47:28 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/04 06:53:56 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/05 00:22:35 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	putname(char *name, char *mode, int col)
 
 void	display(t_files *file, t_param param)
 {
-	while (file->next)
+	while (file)
 	{
 		ft_putstr(file->mode);
 		ft_putchar(' ');
@@ -43,7 +43,7 @@ void	display(t_files *file, t_param param)
 		ft_putstr(file->grp);
 		ft_putchar('\t');
 		ft_putnbr(file->size);
-		ft_putchar('\t');
+	ft_putchar('\t');
 		ft_putstr(file->time);
 		ft_putchar(' ');
 		putname(file->name, file->mode, param.color);
@@ -67,32 +67,32 @@ void	fill_stats(char *name, struct stat stat, t_files *f, t_param param)
 t_files	*list_files(char *path, t_param param)
 {
 	struct dirent	*dir;
-struct stat		stat;
+	struct stat		stat;
 	t_files			*f;
+	t_files			*begin;
 	char			*file;
 	DIR				*dirp;
 
 	if (!(dirp = opendir(path)))
 		out_err(path);
 	f = (t_files *)malloc(sizeof(t_files));
-	f->last = NULL;
+	begin = f;
+	file = NULL;
 	while ((dir = readdir(dirp)))
 	{
 		if (file)
 		{
 			f->next = (t_files *)malloc(sizeof(t_files));
-			f->next->last = f;
 			f = f->next;
 		}
 		file = set_path(path, dir->d_name);
 		if ((lstat(file, &stat)) < 0)
 			out_err("lstat");
-		free(file);
 		fill_stats(dir->d_name, stat, f, param);
 	}
-	f = go_first(f);
-	f = sort(f, param);
-	display(f, param);
+	ft_strdel(&file);
+	sort(&begin, param);
+	display(begin, param);
 	closedir(dirp);
-	return (f);
+	return (begin);
 }

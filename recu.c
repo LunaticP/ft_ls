@@ -6,26 +6,29 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/30 16:54:04 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/04 02:11:09 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/05 00:44:59 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	free_list(t_files *f)
+void	free_list(t_files **f)
 {
-	t_files	*tmp;
-
-	while (f->next)
-	{
-		tmp = f->next;
-		free(f->name);
-		free(f->mode);
-		free(f->usr);
-		free(f->grp);
-		free(f);
-		f = tmp;
-	}
+	if (!*f)
+		return;
+	free_list(&(*f)->next);
+	free((*f)->name);
+	free((*f)->mode);
+	free((*f)->usr);
+	free((*f)->grp);
+	free((*f)->time);
+	free(*f);
+	(*f)->name = NULL;
+	(*f)->mode = NULL;
+	(*f)->usr = NULL;
+	(*f)->grp = NULL;
+	(*f)->time = NULL;
+	*f = NULL;
 }
 
 int		is_not(char *name)
@@ -35,30 +38,27 @@ int		is_not(char *name)
 	return (1);
 }
 
-void	recu(char *path, t_param param)
+void	recu(char *path, t_param p)
 {
 	t_files	*f;
 	t_files	*cur;
+	char	*dir;
 
-	f = list_files(path, param);
-	f = go_first(f);
+	f = list_files(path, p);
 	cur = f;
 	while (f)
 	{
 		usleep(1000);
-		ft_putstr("\e[33m");
-		ft_putstr(f->name);
-		ft_putstr("\t\e[32mtest1\e[0m\n");
-		if (f->mode[0] == 'd' && is_not(f->name))
+		if (f->mode[0] == 'd' && is_not(f->name) && is_hide(f->name[0], p.all))
 		{
-			ft_putstr("\e[33mtest2\e[0m\n");
-			path = set_path(path, f->name);
-			ft_putstr(path);
+			dir = set_path(path, f->name);
+			ft_putchar('\n');
+			ft_putstr(dir);
 			ft_putstr(":\n");
-			recu(path, param);
+			recu(dir, p);
 		}
 		f = f->next;
 	}
 	f = cur;
-	free_list(f);
+	free_list(&f);
 }

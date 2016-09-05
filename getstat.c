@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/02 01:27:42 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/04 06:53:48 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/05 03:57:40 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,32 @@ char	*parse_time(char *t)
 		out = ft_strncpy(out, &t[4], 12);
 	else
 		out = strncpy(out, &t[4], 7);
-	out = ft_strjoin(out, &t[19]);
+	out = free_join(out, &t[19]);
 	out[12] = '\0';
 	return (out);
 }
 
-char	*get_time(int *t, struct stat stat, t_param param)
+char	*get_time(struct timespec *t, struct stat stat, t_param param)
 {
-	time_t	time;
-	char	*out;
+	time_t			time;
+	char			*out;
 
 
 	if (param.date == 1)
+	{
+		*t = stat.st_atimespec;
 		time = stat.st_atime;
+	}
 	else if (param.date == 2)
+	{
+		*t = stat.st_birthtimespec;
 		time = stat.st_birthtime;
+	}
 	else
+	{
+		*t = stat.st_mtimespec;
 		time = stat.st_mtime;
-	*t = time;
+	}
 	out = parse_time(ctime(&time));
 	return (out);
 }

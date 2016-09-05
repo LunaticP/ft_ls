@@ -6,108 +6,116 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/03 04:08:04 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/04 06:58:28 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/04 21:49:04 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_files	*sort_ascii(t_files *f)
+void	reverse(char *tmp1, int tmp2, struct timespec tmp3, t_files **f)
 {
-	int	changed;
-
-	changed = 1;
-	while (changed && !(changed = 0))
-	{
-		f = go_first(f);
-		while (f->next)
-		{
-			if (ft_strcmp(f->name, f->next->name) > 0 && (changed = 1))
-			{
-				f->next->last = f->last;
-				if (f->last)
-					f->last->next = f->next;
-				if (f->next->next)
-					f->next->next->last = f;
-				f->last = f->next;
-				f->next = f->next->next;
-				f->last->next = f;
-			}
-			if (f->next)
-				f = f->next;
-		}
-	}
-	f = go_first(f);
-	return (f);
+	tmp1 = (*f)->name;
+	(*f)->name = (*f)->next->name;
+	(*f)->next->name = tmp1;
+	tmp1 = (*f)->mode;
+	(*f)->mode = (*f)->next->mode;
+	(*f)->next->mode = tmp1;
+	tmp2 = (*f)->nl;
+	(*f)->nl = (*f)->next->nl;
+	(*f)->next->nl = tmp2;
+	tmp1 = (*f)->usr;
+	(*f)->usr = (*f)->next->usr;
+	(*f)->next->usr = tmp1;
+	tmp1 = (*f)->grp;
+	(*f)->grp = (*f)->next->grp;
+	(*f)->next->grp = tmp1;
+	tmp2 = (*f)->size;
+	(*f)->size = (*f)->next->size;
+	(*f)->next->size = tmp2;
+	tmp1 = (*f)->time;
+	(*f)->time = (*f)->next->time;
+	(*f)->next->time = tmp1;
+	tmp3 = (*f)->t;
+	(*f)->t = (*f)->next->t;
+	(*f)->next->t = tmp3;
 }
 
-t_files	*sort_size(t_files *f)
+void	sort_ascii(t_files **f)
 {
-	int	changed;
+	t_files			**begin;
+	char			*tmp1;
+	int				tmp2;
+	struct timespec	tmp3;
 
-	changed = 1;
-	while (changed && !(changed = 0))
+	begin = f;
+	while ((*f)->next)
 	{
-		f = go_first(f);
-		while (f->next)
+		if (ft_strcmp((*f)->name, (*f)->next->name) > 0)
 		{
-			if ((f->size < f->next->size) && (changed = 1))
-			{
-				f->next->last = f->last;
-				if (f->last)
-					f->last->next = f->next;
-				if (f->next->next)
-					f->next->next->last = f;
-				f->last = f->next;
-				f->next = f->next->next;
-				f->last->next = f;
-			}
-			if (f->next)
-				f = f->next;
+			reverse(tmp1, tmp2, tmp3, f);
+			f = begin;
 		}
+		else
+			f = &(*f)->next;
 	}
-	f = go_first(f);
-	return (f);
 }
 
-t_files	*sort_time(t_files *f)
+void	sort_time(t_files **f)
 {
-	int		changed;
+	t_files			**begin;
+	char			*tmp1;
+	int				tmp2;
+	struct timespec	tmp3;
 
-	changed = 1;
-	while (changed && !(changed = 0))
+	begin = f;
+	while ((*f)->next)
 	{
-		f = go_first(f);
-		while (f->next)
+		if ((*f)->t.tv_sec < (*f)->next->t.tv_sec)
 		{
-			if ((f->t < f->next->t) && (changed = 1))
-			{
-				f->next->last = f->last;
-				if (f->last)
-					f->last->next = f->next;
-				if (f->next->next)
-					f->next->next->last = f;
-				f->last = f->next;
-				f->next = f->next->next;
-				f->last->next = f;
-			}
-			if (f->next)
-				f = f->next;
+			reverse(tmp1, tmp2, tmp3, f);
+			f = begin;
 		}
+		else if ((*f)->t.tv_sec == (*f)->next->t.tv_sec)
+		{
+			if ((*f)->t.tv_nsec < (*f)->next->t.tv_nsec)
+			{
+				reverse(tmp1, tmp2, tmp3, f);
+				f = begin;
+			}
+			else
+				f = &(*f)->next;
+		}
+		else
+			f = &(*f)->next;
 	}
-	f = go_first(f);
-	return (f);
 }
 
-t_files	*sort(t_files *f, t_param param)
+void	sort_size(t_files **f)
+{
+	t_files			**begin;
+	char			*tmp1;
+	int				tmp2;
+	struct timespec	tmp3;
+
+	begin = f;
+	while ((*f)->next)
+	{
+		if ((*f)->size < (*f)->next->size)
+		{
+			reverse(tmp1, tmp2, tmp3, f);
+			f = begin;
+		}
+		else
+			f = &(*f)->next;
+	}
+}
+
+void	sort(t_files **f, t_param param)
 {
 	if (!param.alph)
-		f = sort_ascii(f);
+		sort_ascii(f);
 	if (param.sort == 1)
-		f = sort_time(f);
-	if (param.sort == 2)
-		f = sort_size(f);
-//	if (param.rev)
-//		f = sort_rev(f);
-	return (f);
+		sort_time(f);
+	else if (param.sort == 2)
+		sort_size(f);
 }

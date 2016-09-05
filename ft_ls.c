@@ -6,7 +6,7 @@
 /*   By: aviau <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/31 20:10:39 by aviau             #+#    #+#             */
-/*   Updated: 2016/09/04 06:45:55 by aviau            ###   ########.fr       */
+/*   Updated: 2016/09/04 18:12:08 by aviau            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,11 @@ int		parse_param(char **av, t_param *param)
 int		main(int ac, char **av)
 {
 	t_param	param;
+	t_files *tmp;
 	int		i;
 
 	if (ac == 1)
-		list_files("./", param);
+		tmp = list_files(".", param);
 	else if (!(i = parse_param(av, &param)))
 		return (1);
 	else if (av[i])
@@ -91,9 +92,12 @@ int		main(int ac, char **av)
 	else
 	{
 		if (param.recu)
-			recu("./", param);
+			recu(".", param);
 		else
-			free_list(list_files("./", param));
+		{
+			tmp = list_files(".", param);
+			free_list(&tmp);
+		}
 	}
 	return (0);
 }
